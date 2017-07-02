@@ -56,35 +56,39 @@ python3 newsdb.py
  Log analysis example of program's output can be seen in the plain text file at [query_result.txt](vagrant/query_result.txt).
 
 ### View Definitions
-
+```
 create view popular_articles as
   select title, count(*) as popularity
   from articles join log
   on log.path LIKE '%' || articles.slug
   group by title
   order by popularity desc;
+```
 
+```
 create view popular_article_authors as
   select author, count(*) as popularity
   from articles join log
   on log.path LIKE '%' || articles.slug
   group by author
   order by popularity desc;
-
+```
+```
 select name, popularity
 from authors join popular_article_authors
 on popular_article_authors.author = authors.id;
-
+```
+```
 create view request_errors as
   select time::timestamp::date as date,
   COUNT(CASE WHEN status LIKE '%200 OK%' THEN 1 END) AS success,
   COUNT(CASE WHEN status LIKE '%404 NOT FOUND%' THEN 1 END) AS errors
   from log
   group by date;
-
+```
 
 ### Table Schema
-
+```
 articles Table
 
  Column |           Type           |                       Modifiers
@@ -127,3 +131,4 @@ Indexes:
     "log_pkey" PRIMARY KEY, btree (id)
 
 
+```
