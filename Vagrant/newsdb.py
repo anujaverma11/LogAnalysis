@@ -60,8 +60,8 @@ def get_error_details():
 
     for i in range(len(req_errors)):
         error_percent = req_errors[i][1] * 100
-        print(req_errors[i][0] +
-                  " - %.2f" % (error_percent) + "%" + " errors")
+        print(req_errors[i][0] + " - %.2f" % (error_percent) +
+              "%" + " errors")
     db.close()
 
 if __name__ == "__main__":
