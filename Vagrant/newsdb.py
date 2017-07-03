@@ -21,7 +21,9 @@ def get_popular_articles():
     """ 1. What are the most popular three articles of all time?"""
     db, cursor = connect()
 
-    query = "select * from popular_articles limit 3"
+    query = """
+            select * from popular_articles limit 3
+            """
     cursor.execute(query)
     articles = cursor.fetchall()
     # print (articles)
@@ -32,6 +34,7 @@ def get_popular_articles():
 
 def get_popular_authors():
     """ 2. Who are the most popular article authors of all time?"""
+    db, cursor = connect()
     query = """
               select name, popularity
               from authors join popular_article_authors
@@ -56,9 +59,8 @@ def get_error_details():
     # print (req_errors)
 
     for i in range(len(req_errors)):
-        error_percent = (req_errors[i][2] / req_errors[i][1]) * 100
-        if (error_percent > 1):
-            print(req_errors[i][0].strftime("%b %d, %Y") +
+        error_percent = req_errors[i][1] * 100
+        print(req_errors[i][0] +
                   " - %.2f" % (error_percent) + "%" + " errors")
     db.close()
 

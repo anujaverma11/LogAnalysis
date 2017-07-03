@@ -80,11 +80,13 @@ on popular_article_authors.author = authors.id;
 ```
 ```
 create view request_errors as
-  select time::timestamp::date as date,
-  COUNT(CASE WHEN status LIKE '%200 OK%' THEN 1 END) AS success,
-  COUNT(CASE WHEN status LIKE '%404 NOT FOUND%' THEN 1 END) AS errors
-  from log
-  group by date;
+  select to_char(date, 'FMMonth FMDD, YYYY') as error_date, err/total as ratio
+       from (select time::date as date,
+                    count(*) as total,
+                    sum((status != '200 OK')::int)::float as err
+                    from log
+                    group by date) as errors
+       where err/total > 0.01;
 ```
 
 ### Table Schema
